@@ -10,3 +10,5 @@ A lightweight web app to upload and organize photos for reference. Features a si
 
 ## Usage
 Open index.html in your browser.
+
+[Visit Website](https://maichuong.github.io/photoref)
