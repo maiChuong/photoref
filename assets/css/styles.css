@@ -452,6 +452,30 @@ body {
   pointer-events: none;
 }
 
+.sidebar-logo-container {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.draw-logo {
+  width: 128px;
+  height: auto;
+  display: inline-block;
+  opacity: 0.85;
+}
+
+/* === Notes Layer Fix === */
+#canvas-notes-layer {
+  position: absolute;
+  top: 60px;
+  left: 220px;
+  right: 60px;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1100; /* Above draw layer and mask */
+}
+
 .text-note {
   position: absolute;
   min-width: 120px;
@@ -461,9 +485,10 @@ body {
   border-radius: 6px;
   padding: 6px 28px 6px 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  z-index: 999;
+  z-index: 1101; /* Above everything else */
   cursor: move;
   font-size: 1em;
+  pointer-events: auto;
 }
 
 .text-note.dragging {
@@ -491,17 +516,4 @@ body {
 }
 .note-delete:hover {
   color: #a94442;
-}
-
-.sidebar-logo-container {
-  text-align: center;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-.draw-logo {
-  width: 128px;
-  height: auto;
-  display: inline-block;
-  opacity: 0.85;
 }

@@ -33,7 +33,10 @@ export function addNoteToBoard(board) {
 
     note.appendChild(content);
     note.appendChild(deleteBtn);
-    board.appendChild(note);
+
+    // Append to the dedicated notes layer
+    const notesLayer = document.getElementById("canvas-notes-layer");
+    notesLayer.appendChild(note);
 
     makeNoteDraggable(note);
 

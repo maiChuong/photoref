@@ -28,21 +28,18 @@
       </button>
     </div>
   </header>
+
   <div id="sidebar-toggle" title="Toggle Sidebar">
     <span id="sidebar-toggle-icon">&#9776;</span>
   </div>
+
   <aside id="sidebar">
     <div id="sidebar-inner">
       <!-- Draw Layers Section -->
       <div id="sidebar-draw-section" class="sidebar-section">
-          <!-- Placeholder for SVG logo -->
         <div class="sidebar-logo-container">
           <img src="assets/images/draw-logo.svg" alt="Logo" class="draw-logo" />
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="draw-logo">
-            <path fill="#014421" d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805ZM50.127 3.805C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745Z"/>
-          </svg> -->
         </div>
-
         <div class="sidebar-title-row">
           <span class="sidebar-title-label">
             <span class="material-icons" style="vertical-align:middle;font-size:1.1em;">layers</span> Draw Layers
@@ -66,6 +63,7 @@
     </div>
     <div id="sidebar-resizer"></div>
   </aside>
+
   <main id="canvas">
     <section id="control-panel">
       <button class="control-btn" title="Upload"><span class="material-icons">upload_file</span> Upload</button>
@@ -77,14 +75,18 @@
       <button class="control-btn" title="Delete"><span class="material-icons">delete</span></button>
       <button class="control-btn" id="notes-add-btn" title="Add Note"><span class="material-icons">sticky_note_2</span></button>
     </section>
+
     <section class="canvas-area">
-      <!-- All draw layer canvases will be injected here by JS -->
       <canvas id="draw-layer" style="display:none;"></canvas>
-      <!-- images/notes rendered here by JS -->
     </section>
+
+    <!-- Notes Layer (new) -->
+    <div id="canvas-notes-layer"></div>
+
     <div id="canvas-mask"></div>
   </main>
-  <!-- Photoshop-style vertical toolbar on the right, with Material Icons -->
+
+  <!-- Photoshop-style vertical toolbar -->
   <nav id="draw-control-panel" aria-label="Drawing tools">
     <button data-tool="select" title="Select"><span class="material-icons">mouse</span></button>
     <button data-tool="line" title="Line"><span class="material-icons">show_chart</span></button>
@@ -98,6 +100,7 @@
     <input type="number" id="draw-width" value="2" min="1" max="10" title="Stroke Width">
     <button id="draw-clear" title="Clear Drawings"><span class="material-icons">delete</span></button>
   </nav>
+
   <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
