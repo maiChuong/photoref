@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PhotoRef Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts & Material Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <style>
+    body { background: #f5f7fa; }
+  </style>
+</head>
+<body>
+  <!-- App Header -->
+  <header id="app-header">
+    <div class="app-logo">
+      <span class="material-icons" style="font-size:2em;vertical-align:middle;color:#007bff;">collections</span>
+      <span class="app-title">PhotoRef Studio</span>
+    </div>
+    <div class="app-header-actions">
+      <button id="app-settings-btn" class="header-icon-btn" title="Settings">
+        <span class="material-icons">settings</span>
+      </button>
+      <button id="app-help-btn" class="header-icon-btn" title="Help">
+        <span class="material-icons">help_outline</span>
+      </button>
+    </div>
+  </header>
+  <div id="sidebar-toggle" title="Toggle Sidebar">
+    <span id="sidebar-toggle-icon">&#9776;</span>
+  </div>
+  <aside id="sidebar">
+    <div id="sidebar-inner">
+      <!-- Draw Layers Section -->
+      <div id="sidebar-draw-section" class="sidebar-section">
+        <div class="sidebar-title-row">
+          <span class="sidebar-title-label">
+            <span class="material-icons" style="vertical-align:middle;font-size:1.1em;">layers</span> Draw Layers
+          </span>
+          <button id="draw-layer-add-btn" class="sidebar-addall-btn" title="Add Draw Layer">
+            <span class="material-icons">add</span>
+          </button>
+          <button id="draw-layer-clear-btn" class="sidebar-clear-btn" title="Clear All Draw Layers">
+            <span class="material-icons">delete_sweep</span>
+          </button>
+        </div>
+        <div id="sidebar-draw-layers" class="sidebar-draw-layers"></div>
+      </div>
+      <!-- Image Layers Section -->
+      <div id="sidebar-header">
+        <h2 id="sidebar-title"><span class="material-icons" style="vertical-align:middle;font-size:1.1em;">layers</span> Layers</h2>
+        <input id="photo-upload" type="file" accept="image/*" multiple style="margin: 10px 18px;" />
+      </div>
+      <div id="sidebar-layers"></div>
+    </div>
+    <div id="sidebar-resizer"></div>
+  </aside>
+  <main id="canvas">
+    <section id="control-panel">
+      <button class="control-btn" title="Upload"><span class="material-icons">upload_file</span> Upload</button>
+      <button class="control-btn" title="Print"><span class="material-icons">print</span> Print</button>
+      <button class="control-btn" title="Zoom In"><span class="material-icons">zoom_in</span></button>
+      <button class="control-btn" title="Zoom Out"><span class="material-icons">zoom_out</span></button>
+      <button class="control-btn" title="Bring Top"><span class="material-icons">vertical_align_top</span></button>
+      <button class="control-btn" title="Focus"><span class="material-icons">crop_free</span></button>
+      <button class="control-btn" title="Delete"><span class="material-icons">delete</span></button>
+      <button class="control-btn" id="notes-add-btn" title="Add Note"><span class="material-icons">sticky_note_2</span></button>
+    </section>
+    <section class="canvas-area">
+      <!-- All draw layer canvases will be injected here by JS -->
+      <canvas id="draw-layer" style="display:none;"></canvas>
+      <!-- images/notes rendered here by JS -->
+    </section>
+    <div id="canvas-mask"></div>
+  </main>
+  <!-- Photoshop-style vertical toolbar on the right, with Material Icons -->
+  <nav id="draw-control-panel" aria-label="Drawing tools">
+    <button data-tool="select" title="Select"><span class="material-icons">mouse</span></button>
+    <button data-tool="line" title="Line"><span class="material-icons">show_chart</span></button>
+    <button data-tool="rectangle" title="Rectangle"><span class="material-icons">crop_square</span></button>
+    <button data-tool="ellipse" title="Ellipse"><span class="material-icons">panorama_fish_eye</span></button>
+    <button data-tool="arrow" title="Arrow"><span class="material-icons">arrow_forward</span></button>
+    <button data-tool="pen" title="Pen"><span class="material-icons">edit</span></button>
+    <button data-tool="text" title="Text"><span class="material-icons">text_fields</span></button>
+    <button data-tool="eraser" title="Eraser"><span class="material-icons">auto_fix_normal</span></button>
+    <input type="color" id="draw-color" value="#007bff" title="Color">
+    <input type="number" id="draw-width" value="2" min="1" max="10" title="Stroke Width">
+    <button id="draw-clear" title="Clear Drawings"><span class="material-icons">delete</span></button>
+  </nav>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

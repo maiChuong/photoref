@@ -1,2 +1,12 @@
 # photoref
-Drop your photo collection, make notes, draw diagrams.
+
+A lightweight web app to upload and organize photos for reference. Features a sidebar, main canvas, and control panel for user actions.
+
+## Features
+- Upload photos
+- Sidebar listing
+- Canvas layering
+- Control panel actions
+
+## Usage
+Open index.html in your browser.
