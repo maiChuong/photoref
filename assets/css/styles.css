@@ -492,3 +492,16 @@ body {
 .note-delete:hover {
   color: #a94442;
 }
+
+.sidebar-logo-container {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.draw-logo {
+  width: 128px;
+  height: auto;
+  display: inline-block;
+  opacity: 0.85;
+}
