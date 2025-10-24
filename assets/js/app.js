@@ -3,6 +3,7 @@ import { initCanvas } from './canvas.js';
 import { initControls } from './controls.js';
 import { initDrawLayer } from './draw.js';
 import { initScreenshotTool } from './screenshot.js';
+import { initSlogan } from './slogan.js'; // ✅ Add this line
 
 function initApp() {
   try {
@@ -10,11 +11,11 @@ function initApp() {
     initCanvas();
     initControls();
     initDrawLayer();
+    initSlogan(); // ✅ Call slogan initializer
   } catch (e) {
     console.error('[Init] Core modules failed:', e);
   }
 
-  // Delay screenshot tool until layout is painted
   requestAnimationFrame(() => {
     setTimeout(() => {
       const box = document.getElementById('screenshot-box');
