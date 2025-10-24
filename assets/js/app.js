@@ -3,7 +3,8 @@ import { initCanvas } from './canvas.js';
 import { initControls } from './controls.js';
 import { initDrawLayer } from './draw.js';
 import { initScreenshotTool } from './screenshot.js';
-import { initSlogan } from './slogan.js'; // ✅ Add this line
+import { initSlogan } from './slogan.js';
+import { initFlash } from './welcomecard.js'; // ✅ Add flash popup initializer
 
 function initApp() {
   try {
@@ -11,7 +12,8 @@ function initApp() {
     initCanvas();
     initControls();
     initDrawLayer();
-    initSlogan(); // ✅ Call slogan initializer
+    initSlogan();     // ✅ Load motivational slogan
+    initFlash();      // ✅ Trigger welcome popup if first access
   } catch (e) {
     console.error('[Init] Core modules failed:', e);
   }
