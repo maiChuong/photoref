@@ -13,17 +13,14 @@ export function getActiveDrawLayerId() { return activeDrawLayerId; }
 
 export function initSidebar() {
   const sidebar = document.getElementById('sidebar');
-  const layersDiv = document.getElementById('sidebar-layers');
-  const uploadButton = document.getElementById('photo-upload');
-  const sidebarDrawSection = document.getElementById('sidebar-draw-section');
+  const canvas = document.getElementById('canvas');
+  const resizer = document.getElementById('sidebar-resizer');
+
+  // --- Draw Layers Section ---
   const drawLayersDiv = document.getElementById('sidebar-draw-layers');
   const drawAddBtn = document.getElementById('draw-layer-add-btn');
   const drawClearBtn = document.getElementById('draw-layer-clear-btn');
-  const sidebarTitle = document.getElementById('sidebar-title');
-  const resizer = document.getElementById('sidebar-resizer');
-  const canvas = document.getElementById('canvas');
 
-  // --- Draw Layer Section ---
   drawAddBtn.onclick = () => {
     const id = `draw-${Date.now()}-${Math.floor(Math.random() * 1e5)}`;
     drawLayers.push({
@@ -150,29 +147,14 @@ export function initSidebar() {
 
   renderDrawLayers();
 
-  // --- Existing Photo Layers Section ---
-  sidebarTitle.style.display = "inline-flex";
-  sidebarTitle.style.alignItems = "center";
-  sidebarTitle.style.gap = "8px";
+  // --- Image Layers Section ---
+  const imageSection = document.getElementById('sidebar-image-section');
+  const layersDiv = document.getElementById('sidebar-layers');
+  const uploadButton = document.getElementById('photo-upload');
+  const imageAddBtn = document.getElementById('image-layer-add-btn');
+  const imageClearBtn = document.getElementById('image-layer-clear-btn');
 
-  const addAllBtn = document.createElement('button');
-  addAllBtn.className = 'sidebar-addall-btn';
-  addAllBtn.title = "Add all layers to canvas";
-  addAllBtn.innerHTML = `<span class="material-icons">add</span>`;
-
-  const clearBtn = document.createElement('button');
-  clearBtn.className = 'sidebar-clear-btn';
-  clearBtn.title = "Clear all layers and canvas";
-  clearBtn.innerHTML = `<span class="material-icons">delete_sweep</span>`;
-
-  if (!sidebarTitle.querySelector('.sidebar-addall-btn')) {
-    sidebarTitle.appendChild(addAllBtn);
-  }
-  if (!sidebarTitle.querySelector('.sidebar-clear-btn')) {
-    sidebarTitle.appendChild(clearBtn);
-  }
-
-  addAllBtn.onclick = () => {
+  imageAddBtn.onclick = () => {
     layers.forEach(layer => {
       window.dispatchEvent(new CustomEvent('add-photo-to-canvas', {
         detail: { imgSrc: layer.imgSrc, name: layer.name }
@@ -180,65 +162,14 @@ export function initSidebar() {
     });
   };
 
-  clearBtn.onclick = () => {
+  imageClearBtn.onclick = () => {
     layers.length = 0;
     canvasPhotos.length = 0;
     renderLayers();
     window.dispatchEvent(new CustomEvent('clear-canvas'));
   };
 
-  // Sidebar toggle/resizer
-  const sidebarToggle = document.getElementById('sidebar-toggle');
-  const sidebarToggleIcon = document.getElementById('sidebar-toggle-icon');
-
-  sidebarToggle.addEventListener('click', () => {
-    sidebar.classList.toggle('closed');
-    const isClosed = sidebar.classList.contains('closed');
-    sidebarToggleIcon.innerHTML = isClosed ? '&#9654;' : '&#9776;';
-    canvas.style.marginLeft = isClosed ? '0px' : sidebar.offsetWidth + 'px';
-    const canvasArea = document.querySelector('.canvas-area');
-    if (canvasArea) {
-      canvasArea.style.width = isClosed
-        ? `calc(100vw - 60px)`
-        : `calc(100vw - ${sidebar.offsetWidth}px - 60px)`;
-    }
-  });
-
-  let isResizing = false;
-  let startX = 0;
-  let startWidth = 0;
-
-  resizer.addEventListener('mousedown', function (e) {
-    isResizing = true;
-    startX = e.clientX;
-    startWidth = sidebar.offsetWidth;
-    document.body.style.cursor = 'ew-resize';
-    e.preventDefault();
-  });
-
-  window.addEventListener('mousemove', function (e) {
-    if (!isResizing) return;
-    let newWidth = startWidth + (e.clientX - startX);
-    newWidth = Math.max(180, Math.min(window.innerWidth / 2, newWidth));
-    sidebar.style.width = newWidth + 'px';
-    if (!sidebar.classList.contains('closed')) {
-      canvas.style.marginLeft = newWidth + 'px';
-      const canvasArea = document.querySelector('.canvas-area');
-      if (canvasArea) {
-        canvasArea.style.width = `calc(100vw - ${newWidth}px - 60px)`;
-      }
-    }
-  });
-
-  window.addEventListener('mouseup', function () {
-    if (isResizing) {
-      isResizing = false;
-      document.body.style.cursor = '';
-    }
-  });
-
-  // Photo upload
-  uploadButton.addEventListener('change', function (event) {
+  uploadButton?.addEventListener('change', function (event) {
     Array.from(event.target.files).forEach(file => {
       const reader = new FileReader();
       reader.onload = function (e) {
@@ -249,7 +180,6 @@ export function initSidebar() {
     });
   });
 
-  // Layer drag-and-drop logic and canvas sync
   function renderLayers() {
     layersDiv.innerHTML = '';
     layers.forEach((layer, idx) => {
@@ -266,10 +196,20 @@ export function initSidebar() {
       plusBtn.className = 'add-to-canvas';
       plusBtn.innerHTML = '<span class="material-icons">add</span>';
       plusBtn.title = 'Add to canvas';
-
       plusBtn.onclick = (e) => {
         e.stopPropagation();
         window.dispatchEvent(new CustomEvent('add-photo-to-canvas', {
+          detail: { imgSrc: layer.imgSrc, name: layer.name }
+        }));
+      };
+
+      const cropBtn = document.createElement('button');
+      cropBtn.className = 'crop-photo';
+      cropBtn.innerHTML = '<span class="material-icons">crop</span>';
+      cropBtn.title = 'Crop photo';
+      cropBtn.onclick = (e) => {
+        e.stopPropagation();
+        window.dispatchEvent(new CustomEvent('crop-photo', {
           detail: { imgSrc: layer.imgSrc, name: layer.name }
         }));
       };
@@ -316,7 +256,7 @@ export function initSidebar() {
         }
       });
 
-      layerDiv.append(countSpan, plusBtn, img, nameSpan);
+      layerDiv.append(countSpan, plusBtn, cropBtn, img, nameSpan);
       layersDiv.appendChild(layerDiv);
     });
   }
