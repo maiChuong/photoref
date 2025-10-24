@@ -74,19 +74,19 @@
       <button class="control-btn" title="Focus"><span class="material-icons">crop_free</span></button>
       <button class="control-btn" title="Delete"><span class="material-icons">delete</span></button>
       <button class="control-btn" id="notes-add-btn" title="Add Note"><span class="material-icons">sticky_note_2</span></button>
+      <button class="control-btn" id="screenshot-btn" title="Screenshot"><span class="material-icons">photo_camera</span></button>
     </section>
 
     <section class="canvas-area">
       <canvas id="draw-layer" style="display:none;"></canvas>
+
+
     </section>
 
-    <!-- Notes Layer (new) -->
     <div id="canvas-notes-layer"></div>
-
     <div id="canvas-mask"></div>
   </main>
 
-  <!-- Photoshop-style vertical toolbar -->
   <nav id="draw-control-panel" aria-label="Drawing tools">
     <button data-tool="select" title="Select"><span class="material-icons">mouse</span></button>
     <button data-tool="line" title="Line"><span class="material-icons">show_chart</span></button>
@@ -100,7 +100,41 @@
     <input type="number" id="draw-width" value="2" min="1" max="10" title="Stroke Width">
     <button id="draw-clear" title="Clear Drawings"><span class="material-icons">delete</span></button>
   </nav>
+  <!-- Screenshot Overlay Box (moved outside canvas-area) -->
+  <div id="screenshot-box" class="screenshot-box hidden">
+    <div class="screenshot-drag-handle">
+      <span class="material-icons">open_with</span>
+    </div>
 
-  <script type="module" src="assets/js/app.js"></script>
+    <div class="screenshot-controls">
+      <select id="screenshot-ratio">
+        <option value="16:9">16:9</option>
+        <option value="1:1">1:1</option>
+        <option value="4:5">4:5</option>
+        <option value="3:2">3:2</option>
+      </select>
+      <button id="screenshot-capture-btn" title="Capture Screenshot">
+        <span class="material-icons">camera_alt</span>
+      </button>
+      <button id="screenshot-cancel-btn" title="Cancel Screenshot">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <div class="screenshot-watermark">
+      <span class="watermark">PhotoRef</span>
+    </div>
+    <div class="screenshot-resize-dot">
+      <span class="material-icons">zoom_out_map</span>
+    </div>
+  </div>
+
+  <!-- Load html2canvas globally for screenshot.js -->
+    <!-- Load app.js first -->
+    <script type="module" src="assets/js/app.js"></script>
+
+    <!-- Load html2canvas after -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 </body>
 </html>

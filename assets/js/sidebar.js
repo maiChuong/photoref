@@ -25,7 +25,7 @@ export function initSidebar() {
 
   // --- Draw Layer Section ---
   drawAddBtn.onclick = () => {
-    const id = `draw-${Date.now()}-${Math.floor(Math.random()*1e5)}`;
+    const id = `draw-${Date.now()}-${Math.floor(Math.random() * 1e5)}`;
     drawLayers.push({
       id,
       name: `Draw Layer ${drawLayers.length + 1}`,
@@ -36,6 +36,7 @@ export function initSidebar() {
     renderDrawLayers();
     window.dispatchEvent(new CustomEvent('draw-layer-added', { detail: { id } }));
   };
+
   drawClearBtn.onclick = () => {
     drawLayers.length = 0;
     activeDrawLayerId = null;
@@ -52,22 +53,18 @@ export function initSidebar() {
       layerDiv.dataset.idx = idx;
       layerDiv.dataset.id = layer.id;
 
-      // Layer order/rank
       const rankSpan = document.createElement('span');
       rankSpan.className = 'layer-rank';
       rankSpan.textContent = idx + 1;
 
-      // Layer icon
       const iconSpan = document.createElement('span');
       iconSpan.className = 'layer-icon material-icons';
       iconSpan.textContent = 'layers';
 
-      // Name
       const nameSpan = document.createElement('span');
       nameSpan.className = 'layer-name';
       nameSpan.textContent = layer.name;
 
-      // Eye icon for visibility
       const eyeBtn = document.createElement('button');
       eyeBtn.className = 'layer-eye-btn';
       eyeBtn.title = layer.visible ? 'Hide layer' : 'Show layer';
@@ -76,10 +73,11 @@ export function initSidebar() {
         e.stopPropagation();
         layer.visible = !layer.visible;
         renderDrawLayers();
-        window.dispatchEvent(new CustomEvent('draw-layer-visibility', { detail: { id: layer.id, visible: layer.visible } }));
+        window.dispatchEvent(new CustomEvent('draw-layer-visibility', {
+          detail: { id: layer.id, visible: layer.visible }
+        }));
       };
 
-      // Lock icon for lock/unlock
       const lockBtn = document.createElement('button');
       lockBtn.className = 'layer-lock-btn';
       lockBtn.title = layer.locked ? 'Unlock layer' : 'Lock layer';
@@ -88,10 +86,11 @@ export function initSidebar() {
         e.stopPropagation();
         layer.locked = !layer.locked;
         renderDrawLayers();
-        window.dispatchEvent(new CustomEvent('draw-layer-lock', { detail: { id: layer.id, locked: layer.locked } }));
+        window.dispatchEvent(new CustomEvent('draw-layer-lock', {
+          detail: { id: layer.id, locked: layer.locked }
+        }));
       };
 
-      // Select to activate
       layerDiv.onclick = () => {
         if (!layer.locked) {
           activeDrawLayerId = layer.id;
@@ -100,7 +99,6 @@ export function initSidebar() {
         }
       };
 
-      // Delete button
       const delBtn = document.createElement('button');
       delBtn.className = 'layer-delete-btn';
       delBtn.title = 'Delete this draw layer';
@@ -115,20 +113,20 @@ export function initSidebar() {
         window.dispatchEvent(new CustomEvent('draw-layer-deleted', { detail: { id: layer.id } }));
       };
 
-      // Drag events
+      // Drag-and-drop events
       layerDiv.addEventListener('dragstart', e => {
         layerDiv.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', idx);
       });
-      layerDiv.addEventListener('dragend', e => {
+      layerDiv.addEventListener('dragend', () => {
         layerDiv.classList.remove('dragging');
       });
       layerDiv.addEventListener('dragover', e => {
         e.preventDefault();
         layerDiv.classList.add('drag-over');
       });
-      layerDiv.addEventListener('dragleave', e => {
+      layerDiv.addEventListener('dragleave', () => {
         layerDiv.classList.remove('drag-over');
       });
       layerDiv.addEventListener('drop', e => {
@@ -139,20 +137,17 @@ export function initSidebar() {
           const moved = drawLayers.splice(draggedIdx, 1)[0];
           drawLayers.splice(idx, 0, moved);
           renderDrawLayers();
-          window.dispatchEvent(new CustomEvent('draw-layers-reordered', { detail: { order: drawLayers.map(l => l.id) } }));
+          window.dispatchEvent(new CustomEvent('draw-layers-reordered', {
+            detail: { order: drawLayers.map(l => l.id) }
+          }));
         }
       });
 
-      layerDiv.appendChild(rankSpan);
-      layerDiv.appendChild(iconSpan);
-      layerDiv.appendChild(nameSpan);
-      layerDiv.appendChild(eyeBtn);
-      layerDiv.appendChild(lockBtn);
-      layerDiv.appendChild(delBtn);
-
+      layerDiv.append(rankSpan, iconSpan, nameSpan, eyeBtn, lockBtn, delBtn);
       drawLayersDiv.appendChild(layerDiv);
     });
   }
+
   renderDrawLayers();
 
   // --- Existing Photo Layers Section ---
@@ -160,12 +155,12 @@ export function initSidebar() {
   sidebarTitle.style.alignItems = "center";
   sidebarTitle.style.gap = "8px";
 
-  let addAllBtn = document.createElement('button');
+  const addAllBtn = document.createElement('button');
   addAllBtn.className = 'sidebar-addall-btn';
   addAllBtn.title = "Add all layers to canvas";
   addAllBtn.innerHTML = `<span class="material-icons">add</span>`;
 
-  let clearBtn = document.createElement('button');
+  const clearBtn = document.createElement('button');
   clearBtn.className = 'sidebar-clear-btn';
   clearBtn.title = "Clear all layers and canvas";
   clearBtn.innerHTML = `<span class="material-icons">delete_sweep</span>`;
@@ -184,6 +179,7 @@ export function initSidebar() {
       }));
     });
   };
+
   clearBtn.onclick = () => {
     layers.length = 0;
     canvasPhotos.length = 0;
@@ -194,22 +190,25 @@ export function initSidebar() {
   // Sidebar toggle/resizer
   const sidebarToggle = document.getElementById('sidebar-toggle');
   const sidebarToggleIcon = document.getElementById('sidebar-toggle-icon');
-  sidebarToggle.style.position = "fixed";
-  sidebarToggle.style.top = "12px";
-  sidebarToggle.style.left = "0px";
-  sidebarToggle.style.zIndex = "1100";
-  sidebarToggleIcon.innerHTML = '&#9776;';
 
   sidebarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('closed');
-    sidebarToggleIcon.innerHTML = sidebar.classList.contains('closed') ? '&#9654;' : '&#9776;';
+    const isClosed = sidebar.classList.contains('closed');
+    sidebarToggleIcon.innerHTML = isClosed ? '&#9654;' : '&#9776;';
+    canvas.style.marginLeft = isClosed ? '0px' : sidebar.offsetWidth + 'px';
+    const canvasArea = document.querySelector('.canvas-area');
+    if (canvasArea) {
+      canvasArea.style.width = isClosed
+        ? `calc(100vw - 60px)`
+        : `calc(100vw - ${sidebar.offsetWidth}px - 60px)`;
+    }
   });
 
   let isResizing = false;
   let startX = 0;
   let startWidth = 0;
 
-  resizer.addEventListener('mousedown', function(e) {
+  resizer.addEventListener('mousedown', function (e) {
     isResizing = true;
     startX = e.clientX;
     startWidth = sidebar.offsetWidth;
@@ -217,15 +216,21 @@ export function initSidebar() {
     e.preventDefault();
   });
 
-  window.addEventListener('mousemove', function(e) {
+  window.addEventListener('mousemove', function (e) {
     if (!isResizing) return;
     let newWidth = startWidth + (e.clientX - startX);
-    newWidth = Math.max(120, Math.min(window.innerWidth / 2, newWidth));
+    newWidth = Math.max(180, Math.min(window.innerWidth / 2, newWidth));
     sidebar.style.width = newWidth + 'px';
-    canvas.style.marginLeft = sidebar.classList.contains('closed') ? "0px" : newWidth + 'px';
+    if (!sidebar.classList.contains('closed')) {
+      canvas.style.marginLeft = newWidth + 'px';
+      const canvasArea = document.querySelector('.canvas-area');
+      if (canvasArea) {
+        canvasArea.style.width = `calc(100vw - ${newWidth}px - 60px)`;
+      }
+    }
   });
 
-  window.addEventListener('mouseup', function() {
+  window.addEventListener('mouseup', function () {
     if (isResizing) {
       isResizing = false;
       document.body.style.cursor = '';
@@ -236,7 +241,7 @@ export function initSidebar() {
   uploadButton.addEventListener('change', function (event) {
     Array.from(event.target.files).forEach(file => {
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         layers.push({ imgSrc: e.target.result, name: file.name });
         renderLayers();
       };
@@ -261,8 +266,6 @@ export function initSidebar() {
       plusBtn.className = 'add-to-canvas';
       plusBtn.innerHTML = '<span class="material-icons">add</span>';
       plusBtn.title = 'Add to canvas';
-      plusBtn.style.width = '22px';
-      plusBtn.style.height = '22px';
 
       plusBtn.onclick = (e) => {
         e.stopPropagation();
@@ -285,16 +288,20 @@ export function initSidebar() {
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', idx);
       });
-      layerDiv.addEventListener('dragend', e => {
+
+      layerDiv.addEventListener('dragend', () => {
         layerDiv.classList.remove('dragging');
       });
+
       layerDiv.addEventListener('dragover', e => {
         e.preventDefault();
         layerDiv.classList.add('drag-over');
       });
-      layerDiv.addEventListener('dragleave', e => {
+
+      layerDiv.addEventListener('dragleave', () => {
         layerDiv.classList.remove('drag-over');
       });
+
       layerDiv.addEventListener('drop', e => {
         e.preventDefault();
         layerDiv.classList.remove('drag-over');
@@ -303,17 +310,16 @@ export function initSidebar() {
           const moved = layers.splice(draggedIdx, 1)[0];
           layers.splice(idx, 0, moved);
           renderLayers();
-          window.dispatchEvent(new CustomEvent('sync-canvas-order', { detail: { newOrder: layers.map(l => l.name) } }));
+          window.dispatchEvent(new CustomEvent('sync-canvas-order', {
+            detail: { newOrder: layers.map(l => l.name) }
+          }));
         }
       });
 
-      layerDiv.appendChild(countSpan);
-      layerDiv.appendChild(plusBtn);
-      layerDiv.appendChild(img);
-      layerDiv.appendChild(nameSpan);
-
+      layerDiv.append(countSpan, plusBtn, img, nameSpan);
       layersDiv.appendChild(layerDiv);
     });
   }
+
   renderLayers();
 }
