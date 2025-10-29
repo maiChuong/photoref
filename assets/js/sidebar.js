@@ -147,6 +147,11 @@ export function initSidebar() {
 
   renderDrawLayers();
 
+  window.addEventListener('refresh-draw-layer-ui', () => {
+  renderDrawLayers();
+});
+
+
   // --- Image Layers Section ---
   const imageSection = document.getElementById('sidebar-image-section');
   const layersDiv = document.getElementById('sidebar-layers');

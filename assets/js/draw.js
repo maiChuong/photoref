@@ -87,6 +87,7 @@ function renderDrawCanvases() {
     }
     renderDrawLayer(layer.id); // Always render visible layer
   });
+  window.dispatchEvent(new CustomEvent('refresh-draw-layer-ui'));
 }
 
 function attachDrawEvents(canvas, layerId) {
